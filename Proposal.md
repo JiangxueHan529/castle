@@ -42,7 +42,7 @@ This is unique from the work we already did in this course because we have never
         * Base(1) -> block
     * Example:
         * Image: 
-        * <img src='https://github.com/JiangxueHan529/castle/blob/main/images/basic%20castle.jpg' width = "500" height = "500"/>
+         <img src='https://github.com/JiangxueHan529/castle/blob/main/images/basic%20castle.jpg' width = "500" height = "500"/>
         * T(4)
         * Base(4) top
         * Base(1) Base(1) Base(1) Base(1) top
@@ -60,7 +60,7 @@ This is unique from the work we already did in this course because we have never
         * Base(1) -> block-T
     * Example:
         * Image: 
-        * <img src='https://github.com/JiangxueHan529/castle/blob/main/images/more%20advanced%20castle.jpg' width = "500" height = "500" />
+         <img src='https://github.com/JiangxueHan529/castle/blob/main/images/more%20advanced%20castle.jpg' width = "500" height = "500" />
         * T(16)
         * Base(16)
         * T(4) T(4) T(4) T(4)
