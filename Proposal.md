@@ -50,7 +50,7 @@ This is unique from the work we already did in this course because we have never
         * T(N) -> Base(N) top
         * T(N) -> Base(N) top-C
         * T(N) -> Base(N) semi-sphere
-        * Base(N) -> $$\epsilon$$ *N
+        * Base(N) -> ε*N
         * Base(N) -> T(N/4) T(N/4) T(N/4) T(N/4)
         * Base(1) -> block
         * Base(1) -> block-C
@@ -61,7 +61,7 @@ This is unique from the work we already did in this course because we have never
         * Base(16)
         * T(4) T(4) T(4) T(4)
         * Base(4) top-C Base(4) Base(4) Base(4) semi-sphere
-        * Base(1) Base(1) Base(1) Base(1) top-C Base(1) Base(1) Base(1) Base(1) $\epsilon$ $\epsilon$ $\epsilon$ $\epsilon$ Base(1) Base(1) Base(1) Base(1) semi-sphere
-        * block-C block block block block top-C block block block-T block $\epsilon$ $\epsilon$ $\epsilon$ $\epsilon$ block-C block block block-T semi-sphere
+        * Base(1) Base(1) Base(1) Base(1) top-C Base(1) Base(1) Base(1) Base(1) ε ε ε εBase(1) Base(1) Base(1) Base(1) semi-sphere
+        * block-C block block block block top-C block block block-T block ε ε ε ε block-C block block block-T semi-sphere
         
             
