@@ -10,7 +10,9 @@ Final Project Proposal
 2. [Algorithms](#Algorithms)
 
 ## Idea
-I'm planning to procedurally generate a castle. The inspiration is from tinyspires: https://twitter.com/tinyspires. Some examples of what I'm working towards are below:
+I'm planning to procedurally generate a castle. The inspiration is from tinyspires: https://twitter.com/tinyspires. Some examples of what I'm working towards are below:\
+<img src='https://github.com/JiangxueHan529/castle/blob/main/images/castle%20example%201.png' />\
+<img src='https://github.com/JiangxueHan529/castle/blob/main/images/castle%20example%202.png' />
 
 This is unique from the work we already did in this course because we have never done an assignment that involves generating shapes procedurally. This is a new challenge!
 
@@ -39,7 +41,7 @@ This is unique from the work we already did in this course because we have never
         * Base(N) -> Base(N/4) Base(N/4) Base(N/4) Base(N/4)
         * Base(1) -> block
     * Example:
-        * Image: <img src='https://github.com/JiangxueHan529/castle/blob/main/basic%20castle.jpg' />
+        * Image: <img src='https://github.com/JiangxueHan529/castle/blob/main/images/basic%20castle.jpg' />
         * T(4)
         * Base(4) top
         * Base(1) Base(1) Base(1) Base(1) top
@@ -56,7 +58,7 @@ This is unique from the work we already did in this course because we have never
         * Base(1) -> block-C
         * Base(1) -> block-T
     * Example:
-        * Image: <img src='https://github.com/JiangxueHan529/castle/blob/main/more%20advanced%20castle.jpg' />
+        * Image: <img src='https://github.com/JiangxueHan529/castle/blob/main/images/more%20advanced%20castle.jpg' />
         * T(16)
         * Base(16)
         * T(4) T(4) T(4) T(4)
