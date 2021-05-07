@@ -50,7 +50,7 @@ This is unique from the work we already did in this course because we have never
         * T(N) -> Base(N) top
         * T(N) -> Base(N) top-C
         * T(N) -> Base(N) semi-sphere
-        * Base(N) -> $\epsilon$ *N
+        * Base(N) -> $$\epsilon$$ *N
         * Base(N) -> T(N/4) T(N/4) T(N/4) T(N/4)
         * Base(1) -> block
         * Base(1) -> block-C
