@@ -10,11 +10,11 @@ Final Project Proposal
 2. [Algorithms](#Algorithms)
 
 ## Idea
-I'm planning to procedurally generate a castle. The inspiration is from tinyspires: https://twitter.com/tinyspires. Some examples of what I'm working towards are below:\
+I'm planning to procedurally generate a castle. The inspiration is from tinyspires: https://twitter.com/tinyspires. Some examples of inspirations are below:\
 <img src='https://github.com/JiangxueHan529/castle/blob/main/images/castle%20example%201.png' width = "350" height = "350"/>\
 <img src='https://github.com/JiangxueHan529/castle/blob/main/images/castle%20example%202.png' width = "350" height = "350"/>
 
-This is unique from the work we already did in this course because we have never done an assignment that involves generating shapes procedurally. This is a new challenge!
+My castle will be different because I will implement my own grammar rules of design. This is unique from the work we already did in this course because we have never done an assignment that involves generating shapes procedurally. This is a new challenge!
 
 ## Features
 ### Basic
