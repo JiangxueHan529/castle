@@ -6,6 +6,22 @@ using namespace agl;
 #ifdef _WIN32
 #define _CRTDBG_MAP_ALLOC //to get more details
 #endif
+void helper(canvas &drawer, int size, int cx, int cy) {
+    if(size == 1){
+        drawer.begin(LINES);
+        drawer.draw_rectangle(cx, cy, 20, 20);
+        drawer.color(rand() %255, rand()%255, rand()%255);
+        drawer.fill_rectangle(cx, cy, 20, 20);
+        drawer.end();
+    }
+    else {
+        helper(drawer, size / 2, cx - size * 5, cy + size * 5);
+        helper(drawer, size / 2, cx + size * 5, cy + size * 5);
+        helper(drawer, size / 2, cx - size * 5, cy - size * 5);
+        helper(drawer, size / 2, cx + size * 5, cy - size * 5);
+    }
+
+}
 
 int main(int argc, char** argv)
 {
@@ -17,18 +33,21 @@ int main(int argc, char** argv)
     _CrtMemCheckpoint(&sOld); //take a snapchot
 #endif
     // next step: define unit, keep dividing until unit is reached. Should provide a n*n box!
+   //Define unit to be 20
+   int size = 12;
    canvas drawer(640, 380);
    drawer.background(0, 0, 0);
-   drawer.begin(LINES);
-   drawer.draw_rectangle(320, 230, 200, 200);
-   drawer.color(0, 0, 255);
-   drawer.fill_rectangle(320, 230, 200, 200);
-   drawer.end();
+   helper(drawer, size, 320, (380-size*20*1.5f)/2 + size*20);
+   //drawer.begin(LINES);
+   //drawer.draw_rectangle(320, 230, 200, 200);
+   //drawer.color(0, 0, 255);
+   //drawer.fill_rectangle(320, 230, 200, 200);
+   //drawer.end();
    drawer.begin(TRIANGLES);
    drawer.color(0, 255, 0);
-   drawer.vertex(220, 130);
-   drawer.vertex(420, 130);
-   drawer.vertex(320, 30);
+   drawer.vertex(320 - size*20/2.0f, ((380 - size * 20 * 1.5f) / 2 + size * 20) - size*20/2.0f);
+   drawer.vertex(320 + size * 20 / 2.0f, ((380 - size * 20 * 1.5f) / 2 + size * 20) - size * 20 / 2.0f);
+   drawer.vertex(320, (380 - size * 20 * 1.5f) / 2);
    drawer.end();
    drawer.save("testing.png");
 
