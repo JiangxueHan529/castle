@@ -1,26 +1,65 @@
 #include <iostream>
 #include "canvas.h"
+#include <string>
+#include <map>
+#include <iterator>
 using namespace std;
 using namespace agl;
 
 #ifdef _WIN32
 #define _CRTDBG_MAP_ALLOC //to get more details
 #endif
-void helper(canvas &drawer, int size, int cx, int cy) {
+// step1: Done, but in future need to see how to make it work for square sides not divisible by 4
+// step2: apply the grammar here to reach the same effect
+// step3: write out the grammar for version 2
+// step4: start implementing a different helper for version 2
+void helper(canvas &drawer, int size, int cx, int cy, int unit, map<string,string> grammar) {
     if(size == 1){
         drawer.begin(LINES);
-        drawer.draw_rectangle(cx, cy, 20, 20);
+        drawer.draw_rectangle(cx, cy, unit, unit);
         drawer.color(rand() %255, rand()%255, rand()%255);
-        drawer.fill_rectangle(cx, cy, 20, 20);
+        drawer.fill_rectangle(cx, cy, unit, unit);
         drawer.end();
     }
     else {
-        helper(drawer, size / 2, cx - size * 5, cy + size * 5);
-        helper(drawer, size / 2, cx + size * 5, cy + size * 5);
-        helper(drawer, size / 2, cx - size * 5, cy - size * 5);
-        helper(drawer, size / 2, cx + size * 5, cy - size * 5);
+        string key = "B" + to_string(size);
+        map<string,string>::iterator myPair = grammar.find(key);
+        string value;
+        if (myPair != grammar.end()) {
+            value = grammar.find(key)->second;
+        }
+        //not sure this is necessary for this case, but should be helpful with more advanced version
+        helper(drawer, size / 2, cx - size * unit/4, cy + size * unit / 4, unit, grammar);
+        helper(drawer, size / 2, cx + size * unit / 4, cy + size * unit / 4,unit,grammar);
+        helper(drawer, size / 2, cx - size * unit / 4, cy - size * unit / 4, unit,grammar);
+        helper(drawer, size / 2, cx + size * unit / 4, cy - size * unit / 4, unit,grammar);
     }
 
+}
+
+void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, string> grammar, string key) {
+    if (key == "B1") {
+        //block level drawing
+    }
+    map<string, string>::iterator myPair = grammar.find(key);
+    string value;
+    if (myPair != grammar.end()) {
+        value = grammar.find(key)->second;
+    }
+    string delimiter = "|";
+    string token_list[5];
+    int i = 0;
+    while (value.find(delimiter) != string::npos) {
+        int pos = value.find(delimiter);
+        string token = value.substr(0, pos);
+        token_list[i++] = token;
+        value = value.substr(pos + 1);
+    }
+    token_list[i] = value;
+    for (int i = 0; i < sizeof(token_list)/sizeof(token_list[0]);i++) {
+        cout << token_list[i] << endl;
+    }
+    //next: pick a random token, divide cases into if this current one is TN, BN, or B1
 }
 
 int main(int argc, char** argv)
@@ -32,25 +71,29 @@ int main(int argc, char** argv)
     _CrtMemState sDiff;
     _CrtMemCheckpoint(&sOld); //take a snapchot
 #endif
-    // next step: define unit, keep dividing until unit is reached. Should provide a n*n box!
+    
    //Define unit to be 20
-   int size = 12;
+   int size = 4;
+   int unit = 50;
    canvas drawer(640, 380);
    drawer.background(0, 0, 0);
-   helper(drawer, size, 320, (380-size*20*1.5f)/2 + size*20);
-   //drawer.begin(LINES);
-   //drawer.draw_rectangle(320, 230, 200, 200);
-   //drawer.color(0, 0, 255);
-   //drawer.fill_rectangle(320, 230, 200, 200);
-   //drawer.end();
+   map<string, string> grammar;
+   grammar.insert(pair<string, string>("B4", "B1,B1,B1,B1"));
+   helper(drawer, size, 320, (380-size*unit*1.5f)/2 + size*unit, unit, grammar);
    drawer.begin(TRIANGLES);
-   drawer.color(0, 255, 0);
-   drawer.vertex(320 - size*20/2.0f, ((380 - size * 20 * 1.5f) / 2 + size * 20) - size*20/2.0f);
-   drawer.vertex(320 + size * 20 / 2.0f, ((380 - size * 20 * 1.5f) / 2 + size * 20) - size * 20 / 2.0f);
-   drawer.vertex(320, (380 - size * 20 * 1.5f) / 2);
+   drawer.color(rand() % 255, rand() % 255, rand() % 255);
+   drawer.vertex(320 - size*unit/2.0f, ((380 - size * unit * 1.5f) / 2 + size * unit) - size*unit/2.0f);
+   drawer.vertex(320 + size * unit / 2.0f, ((380 - size * unit * 1.5f) / 2 + size * unit) - size * unit / 2.0f);
+   drawer.vertex(320, (380 - size * unit * 1.5f) / 2);
    drawer.end();
    drawer.save("testing.png");
-
+   drawer.background(0, 0, 0);
+   map<string, string> grammar2;
+   grammar2.insert(pair<string, string>("TN", "BN|BN,top|BN,top-C|BN,semi-sphere"));
+   grammar2.insert(pair<string, string>("BN", ""));
+   grammar2.insert(pair<string, string>("BN", "TN/2,TN/2,TN/2,TN/2"));
+   grammar2.insert(pair<string, string> ("B1", "block|block-C|block-T"));
+   helper2(drawer, size, 320, (380 - size * unit * 1.5f) / 2 + size * unit, unit, grammar2,"TN");
    /*drawer.background(167, 242, 242);
    drawer.begin(LINES);
    drawer.draw_rectangle(280, 190, 180, 100);
