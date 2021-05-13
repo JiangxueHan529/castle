@@ -24,10 +24,11 @@ namespace agl
        int* color_tracker;
        vector<int> radius;
        vector<int> line_width;
-       ppm_image _canvas;
+       
 
 
    public:
+      ppm_image _canvas;
       canvas(int w, int h);
       virtual ~canvas();
 
@@ -37,10 +38,13 @@ namespace agl
       int helper(vector<int> a, vector<int> b, vector<int> c);
       void draw_circle(int x, int y, int radius, int color_index);
       void drawC(int x, int y, int x1, int y1, ppm_pixel* our_color);
+      void drawC_semi(int x, int y, int x1, int y1, ppm_pixel* our_color);
+      void draw_semi_circle(int x, int y, int radius, int color_index);
       void input_radius(int r);
       void input_line_width(int lw);
       void draw_rectangle(int cx, int xy, int w, int h);
       void fill_rectangle(int cx, int xy, int w, int h);
+      ppm_image* get_image();
 
       // Draw primitives with a given type (either LINES or TRIANGLES)
       // For example, the following draws a red line followed by a green line

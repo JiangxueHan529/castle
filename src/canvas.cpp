@@ -57,6 +57,12 @@ void canvas::begin(PrimitiveType type)
 	line_width = vec;
 }
 
+
+ppm_image* canvas::get_image() {
+	return &_canvas;
+}
+
+
 void canvas::end()
 {   // need to update the thing with tracker
 	if (curShape == LINES) {
@@ -311,6 +317,14 @@ void canvas::drawC(int x, int y, int x1, int y1, ppm_pixel* our_color) {
 
 }
 
+void canvas::drawC_semi(int x, int y, int x1, int y1, ppm_pixel* our_color) {
+	_canvas.set(x + x1, y - y1, *our_color);
+	_canvas.set(x - x1, y - y1, *our_color);
+	_canvas.set(x - y1, y - x1, *our_color);
+	_canvas.set(x + y1, y - x1, *our_color);
+
+}
+
 void canvas::draw_circle(int x, int y, int radius, int color_index) {
 	int x1 = 0;
 	int y1 = radius;
@@ -328,6 +342,27 @@ void canvas::draw_circle(int x, int y, int radius, int color_index) {
 		else
 			d = d + 4 * x1 + 6;
 		
+		drawC(x, y, x1, y1, &our_color);
+	}
+}
+
+void canvas::draw_semi_circle(int x, int y, int radius, int color_index) {
+	int x1 = 0;
+	int y1 = radius;
+	int d = 3 - 2 * radius;
+	ppm_pixel our_color = ppm_pixel{ curColor[color_index],curColor[color_index + 1] ,curColor[color_index + 2] };
+	drawC(x, y, x1, y1, &our_color);
+	while (y1 >= x1)
+	{
+		x1++;
+		if (d > 0)
+		{
+			y1--;
+			d = d + 4 * (x1 - y1) + 10;
+		}
+		else
+			d = d + 4 * x1 + 6;
+
 		drawC(x, y, x1, y1, &our_color);
 	}
 }

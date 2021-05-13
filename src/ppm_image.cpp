@@ -17,7 +17,13 @@ ppm_image::ppm_image(int width, int height) : myWidth(width), myHeight(height)
 
 ppm_image::ppm_image(const ppm_image& orig)
 {
-    cout << "not implemented\n";
+    myWidth = orig.myWidth;
+    myHeight = orig.myHeight;
+    int total = myWidth * myHeight;
+    myData = new ppm_pixel[total];
+    for (int i = 0; i < total;i++) {
+        myData[i] = orig.myData[i];
+    }
 }
 
 ppm_image& ppm_image::operator=(const ppm_image& orig)

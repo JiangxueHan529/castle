@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <iterator>
+#include <ctime>
 using namespace std;
 using namespace agl;
 
@@ -38,9 +39,6 @@ void helper(canvas &drawer, int size, int cx, int cy, int unit, map<string,strin
 }
 
 void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, string> grammar, string key) {
-    if (key == "B1") {
-        //block level drawing
-    }
     map<string, string>::iterator myPair = grammar.find(key);
     string value;
     if (myPair != grammar.end()) {
@@ -56,12 +54,130 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
         value = value.substr(pos + 1);
     }
     token_list[i] = value;
-    for (int i = 0; i < sizeof(token_list)/sizeof(token_list[0]);i++) {
-        cout << token_list[i] << endl;
+    string new_key;
+
+    string my_token;
+    if (key == "B1") {
+       // srand((unsigned)time(NULL));
+        int choice = rand() % 3;
+        my_token = token_list[choice];
+        if (my_token == "block") {
+            drawer.begin(LINES);
+            drawer.draw_rectangle(cx, cy, unit, unit);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.fill_rectangle(cx, cy, unit, unit);
+            drawer.end();
+        }
+        else if (my_token == "block-C") {
+ 
+            drawer.begin(LINES);
+            drawer.draw_rectangle(cx, cy, unit, unit);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.fill_rectangle(cx, cy, unit, unit);
+            drawer.end();
+            drawer.begin(CIRCLES);
+            drawer.color(255, 255, 255);
+            drawer.input_radius(unit / 10.0f);
+            drawer.vertex(cx-unit/5.0f, cy);
+            drawer.input_radius(unit / 10.0f);
+            drawer.vertex(cx + unit / 5.0f, cy);
+            drawer.input_radius(unit / 10.0f);
+            drawer.vertex(cx, cy - unit / 5.0f);
+            drawer.input_radius(unit / 10.0f);
+            drawer.vertex(cx, cy + unit / 5.0f);
+            drawer.end();
+            
+        }
+        else {
+            drawer.begin(LINES);
+            drawer.draw_rectangle(cx, cy, unit, unit);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.fill_rectangle(cx, cy, unit, unit);
+            drawer.end();
+            drawer.begin(TRIANGLES);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.vertex(cx, cy - unit / 2.0f);
+            drawer.vertex(cx + unit / 2.0f, cy + unit / 2.0f);
+            drawer.vertex(cx - unit / 2.0f, cy + unit / 2.0f);
+            drawer.end();
+        }
     }
-    //next: pick a random token, divide cases into if this current one is TN, BN, or B1
+    else if (key == "BN") {
+        //srand((unsigned)time(NULL));
+        int choice = rand() % 2;
+        my_token = token_list[choice];
+        if (my_token == "epsilon") {
+            if (size > 2) {
+                my_token = "TN/2,TN/2,TN/2,TN/2";
+            }
+        }
+        if (my_token != "epsilon") {
+            new_key = "TN";
+            //have to implement: if your higher Base is not epsilon, you cannot be epsilon
+            helper2(drawer, size / 2, cx - size * unit / 4, cy + size * unit / 4, unit, grammar, new_key);
+            helper2(drawer, size / 2, cx + size * unit / 4, cy + size * unit / 4, unit, grammar, new_key);
+            helper2(drawer, size / 2, cx - size * unit / 4, cy - size * unit / 4, unit, grammar, new_key);
+            helper2(drawer, size / 2, cx + size * unit / 4, cy - size * unit / 4, unit, grammar, new_key);
+        }
+    }
+    else if (key == "TN") {
+        //srand((unsigned)time(NULL));
+        int choice = rand() % 4;
+        my_token = token_list[choice];
+        if (size == 1) {
+            new_key = "B1";
+        }
+        else {
+            new_key = "BN";
+        }
+        ppm_image img = drawer._canvas;
+        if (img.get(cy - size*unit,cx).r != 0 || img.get(cy - size*unit,cx).g != 0 || img.get(cy - size*unit,cx).b != 0){
+            my_token = "BN";
+        }
+        if (my_token == "BN") {
+            helper2(drawer, size, cx, cy, unit, grammar, new_key);
+        }
+        else if (my_token == "BN,top") {
+          //how to know if BN will get into epsilon before calling it?
+            // I need to draw top first so that I can make sure not to draw smaller tops later
+            drawer.begin(TRIANGLES);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.vertex(cx - size * unit / 2.0f, cy - size * unit/2.0f);
+            drawer.vertex(cx + size * unit / 2.0f, cy - size * unit / 2.0f);
+            drawer.vertex(cx, cy -size*unit);
+            drawer.end();
+            helper2(drawer, size, cx, cy, unit, grammar, new_key);
+        }
+        else if (my_token == "BN,top-C") {
+       
+            drawer.begin(TRIANGLES);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.vertex(cx - size * unit / 2.0f, cy - size * unit / 2.0f);
+            drawer.vertex(cx + size * unit / 2.0f, cy - size * unit / 2.0f);
+            drawer.vertex(cx, cy - size * unit);
+            drawer.end();
+            drawer.begin(CIRCLES);
+            drawer.color(255,255,255);
+            drawer.input_radius(10);
+            drawer.vertex(cx, cy - size * unit - 10);
+            drawer.end();
+            helper2(drawer, size, cx, cy, unit, grammar, new_key);
+        }
+        //next: figure out how to fill in circles
+        else{
+            drawer.begin(CIRCLES);
+            drawer.color(rand() % 255, rand() % 255, rand() % 255);
+            drawer.input_radius(size* unit / 2.0f);
+            drawer.vertex(cx, cy - size * unit / 2.0f);
+            drawer.end();
+            helper2(drawer, size, cx, cy, unit, grammar, new_key);
+        }
+       
+    }
+
 }
 
+//todo: implement command arguments parsing
 int main(int argc, char** argv)
 {
 
@@ -87,13 +203,15 @@ int main(int argc, char** argv)
    drawer.vertex(320, (380 - size * unit * 1.5f) / 2);
    drawer.end();
    drawer.save("testing.png");
-   drawer.background(0, 0, 0);
+   canvas drawer2(640, 380);
+   drawer2.background(0, 0, 0);
    map<string, string> grammar2;
    grammar2.insert(pair<string, string>("TN", "BN|BN,top|BN,top-C|BN,semi-sphere"));
-   grammar2.insert(pair<string, string>("BN", ""));
-   grammar2.insert(pair<string, string>("BN", "TN/2,TN/2,TN/2,TN/2"));
+   grammar2.insert(pair<string, string>("BN", "epsilon|TN/2,TN/2,TN/2,TN/2"));
    grammar2.insert(pair<string, string> ("B1", "block|block-C|block-T"));
-   helper2(drawer, size, 320, (380 - size * unit * 1.5f) / 2 + size * unit, unit, grammar2,"TN");
+   //have to figure out the limit to command line arguments
+   helper2(drawer2, size, 320, (380 - size * unit * 1.5f) / 2 + size * unit, unit, grammar2,"TN");
+   drawer2.save("testing4.png");
    /*drawer.background(167, 242, 242);
    drawer.begin(LINES);
    drawer.draw_rectangle(280, 190, 180, 100);
