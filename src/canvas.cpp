@@ -1,7 +1,7 @@
 #include "canvas.h"
 #include <cassert>
 #include <vector>
-
+#include <cmath>
 using namespace std;
 using namespace agl;
 
@@ -209,6 +209,7 @@ void canvas::end()
 		int color_index = tracker[i];
 		int color_track = color_tracker[i + 2];
 		barycentric_fill(vertex1, vertex2, vertex3, color_index, color_track);
+		
 	}
 }
 	else if (curShape == CIRCLES) {
@@ -232,7 +233,12 @@ void canvas::end()
 					color_index = tracker[i - 1];
 					tracker[i] = tracker[i - 1];
 				}
-				draw_circle(vertices[i][1], vertices[i][0], radius[i], color_index);
+				if (semi_circle == false) {
+					draw_circle(vertices[i][1], vertices[i][0], radius[i], color_index);
+				}
+				else {
+					draw_semi_circle(vertices[i][1], vertices[i][0], radius[i], color_index);
+				}
 			}
 		}
 	else if (curShape == POINTS) {
@@ -248,7 +254,7 @@ void canvas::end()
 
 	}
 
-// need to consider only two colors for a triangle
+
 void canvas::barycentric_fill(vector<int> a, vector<int> b, vector<int> c, int color_index, int color_track) {
 	int xmin = min(min(a[0], b[0]), c[0]);
 	int xmax = max(max(a[0], b[0]), c[0]);
@@ -258,53 +264,58 @@ void canvas::barycentric_fill(vector<int> a, vector<int> b, vector<int> c, int c
 	int f_beta = helper(a, c, b);
 	int f_gamma = helper(a, b, c);
 	ppm_pixel pure = ppm_pixel{ curColor[color_index], curColor[color_index + 1],curColor[color_index + 2] };
+	bool flag = false;
 	
-	for (int row = ymin; row < ymax + 1;row++) {
-		for (int col = xmin; col < xmax + 1;col++) {
-			float alpha = (float)helper(b, c, vector<int>{col, row}) / (float)f_alpha;
-			float beta = (float)helper(a, c, vector<int>{col, row}) / (float)f_beta;
-			float gamma = (float)helper(a, b, vector<int>{col, row}) / (float)f_gamma;
+			for (int row = ymin; row < ymax + 1;row++) {
+				for (int col = xmin; col < xmax + 1;col++) {
 
-			int r = (int)curColor[color_index] * alpha +
-				(int)curColor[color_index + 3] * beta + (int)curColor[color_index + 6] * gamma;
-			int g = (int)curColor[color_index + 1] * alpha + (int)curColor[color_index + 4] * beta +
-				(int)curColor[color_index + 7] * gamma;
-			int blue = (int)curColor[color_index + 2] * alpha +
-				(int)curColor[color_index + 5] * beta + (int)curColor[color_index + 8] * gamma;
+					float alpha = (float)helper(b, c, vector<int>{col, row}) / (float)f_alpha;
+					float beta = (float)helper(a, c, vector<int>{col, row}) / (float)f_beta;
+					float gamma = (float)helper(a, b, vector<int>{col, row}) / (float)f_gamma;
 
-			ppm_pixel interpolated = ppm_pixel{ (unsigned char)r,(unsigned char)g ,(unsigned char)blue };
-			if (alpha >= 0 && beta >= 0 && gamma >= 0) {
-				if (alpha > 0 || f_alpha * helper(b, c, vector<int>{-1, -1}) > 0) {
-					if (color_track*3 -  color_index == 3) {
-						_canvas.set(row, col,pure);
-					}
-					else {
-				
+					int r = (int)curColor[color_index] * alpha +
+						(int)curColor[color_index + 3] * beta + (int)curColor[color_index + 6] * gamma;
+					int g = (int)curColor[color_index + 1] * alpha + (int)curColor[color_index + 4] * beta +
+						(int)curColor[color_index + 7] * gamma;
+					int blue = (int)curColor[color_index + 2] * alpha +
+						(int)curColor[color_index + 5] * beta + (int)curColor[color_index + 8] * gamma;
 
-						_canvas.set(row, col,interpolated);
-					}
-					if (alpha > 0 || f_beta * helper(a, c, vector<int>{-1, -1}) > 0) {
-						if (color_track * 3 - color_index == 3) {
-							_canvas.set(row, col, pure);
-						}
-						else {
-							_canvas.set(row, col, interpolated);
-						}
+					ppm_pixel interpolated = ppm_pixel{ (unsigned char)r,(unsigned char)g ,(unsigned char)blue };
+					if (alpha >= 0 && beta >= 0 && gamma >= 0) {
+						if (alpha > 0 || f_alpha * helper(b, c, vector<int>{-1, -1}) > 0) {
+							if (color_track * 3 - color_index == 3) {
+								_canvas.set(row, col, pure);
+							}
+							else {
 
-					}
-					if (alpha > 0 || f_gamma * helper(a, b, vector<int>{-1, -1}) > 0) {
-						if (color_track * 3 - color_index == 3) {
-							_canvas.set(row, col, pure);
-						}
-						else {
-							_canvas.set(row, col, interpolated);
+
+								_canvas.set(row, col, interpolated);
+							}
+							if (alpha > 0 || f_beta * helper(a, c, vector<int>{-1, -1}) > 0) {
+								if (color_track * 3 - color_index == 3) {
+									_canvas.set(row, col, pure);
+								}
+								else {
+									_canvas.set(row, col, interpolated);
+								}
+
+							}
+							if (alpha > 0 || f_gamma * helper(a, b, vector<int>{-1, -1}) > 0) {
+								if (color_track * 3 - color_index == 3) {
+									_canvas.set(row, col, pure);
+								}
+								else {
+									_canvas.set(row, col, interpolated);
+								}
+							}
 						}
 					}
 				}
 			}
-		}
+		
 	}
-}
+
+
 void canvas::drawC(int x, int y, int x1, int y1, ppm_pixel* our_color) {
 	_canvas.set(x + x1, y + y1, *our_color);
 	_canvas.set(x - x1, y + y1, *our_color);
@@ -318,11 +329,10 @@ void canvas::drawC(int x, int y, int x1, int y1, ppm_pixel* our_color) {
 }
 
 void canvas::drawC_semi(int x, int y, int x1, int y1, ppm_pixel* our_color) {
-	_canvas.set(x + x1, y - y1, *our_color);
 	_canvas.set(x - x1, y - y1, *our_color);
 	_canvas.set(x - y1, y - x1, *our_color);
-	_canvas.set(x + y1, y - x1, *our_color);
-
+	_canvas.set(x - x1, y + y1, *our_color);
+	_canvas.set(x - y1, y + x1, *our_color);
 }
 
 void canvas::draw_circle(int x, int y, int radius, int color_index) {
@@ -363,8 +373,31 @@ void canvas::draw_semi_circle(int x, int y, int radius, int color_index) {
 		else
 			d = d + 4 * x1 + 6;
 
-		drawC(x, y, x1, y1, &our_color);
+		drawC_semi(x, y, x1, y1, &our_color);
 	}
+}
+
+bool canvas::fill_circle(int x, int y, int radius) {
+	int color_index = (numColor - 1) * 3;
+	for (int row = y - radius; row < y; row++) {
+		for (int col = x - radius; col < x + radius; col++) {
+			if (pow((row - y), 2) + pow((col - x), 2) < pow(radius, 2)) {
+				if (_canvas.get(row, col).r != 0 || _canvas.get(row, col).g != 0 || _canvas.get(row, col).b != 0) {
+					return false;
+				}
+				
+			}
+		}
+	}
+	for (int row = y - radius; row < y; row++) {
+		for (int col = x - radius; col < x + radius; col++) {
+			if (pow((row - y), 2) + pow((col - x), 2) < pow(radius, 2)) {
+				
+				_canvas.set(row, col, ppm_pixel{ curColor[color_index],curColor[color_index + 1],curColor[color_index + 2] });
+			}
+		}
+	}
+	return true;
 }
 
 int canvas::helper(vector<int> a, vector<int> b, vector<int> c) {
@@ -373,10 +406,15 @@ int canvas::helper(vector<int> a, vector<int> b, vector<int> c) {
 
 void canvas::input_radius(int r) {
 	radius.push_back(r);
+	semi_circle = false;
 }
 
 void canvas::input_line_width(int lw) {
 	line_width[numVec] = lw;
+}
+
+void canvas::input_semi_circle() {
+	semi_circle = true;
 }
 
 void canvas::draw_rectangle(int cx, int cy, int w, int h) {
@@ -390,6 +428,13 @@ void canvas::draw_rectangle(int cx, int cy, int w, int h) {
 	this->vertex(cx + w / 2, cy + h / 2);
 }
 
+void canvas::clear_area(int xmin, int xmax, int ymin, int ymax) {
+	for (int row = ymin; row < ymax; row++) {
+		for (int col = xmin;col < xmax; col++) {
+			_canvas.set(row, col, ppm_pixel{ 0,0,0 });
+		}
+	}
+}
 void canvas::fill_rectangle(int cx, int cy, int w, int h) {
 	int color_index = (numColor - 1) * 3;
 	for (int row = cy - h / 2 + 1; row < cy + h / 2; row++) {

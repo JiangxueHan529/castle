@@ -24,6 +24,7 @@ namespace agl
        int* color_tracker;
        vector<int> radius;
        vector<int> line_width;
+       bool semi_circle = false;
        
 
 
@@ -44,7 +45,10 @@ namespace agl
       void input_line_width(int lw);
       void draw_rectangle(int cx, int xy, int w, int h);
       void fill_rectangle(int cx, int xy, int w, int h);
+      bool fill_circle(int x, int y, int radius);
+      void input_semi_circle();
       ppm_image* get_image();
+      void clear_area(int xmin, int xmax, int ymin, int ymax);
 
       // Draw primitives with a given type (either LINES or TRIANGLES)
       // For example, the following draws a red line followed by a green line
