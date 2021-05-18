@@ -48,6 +48,7 @@
     * I made sure that in the same recursion level nothing can be drawn over epsilon, however it's hard to decide and implement other scenarios. Here are two different situations, one seems ok but the other is not. I did not succeed in making this distinction
 <img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing30.png' width = '480' height = '285'>
 <img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing33.png' width = '480' height = '480'>
+
 * The issue where a top is drawn but there is partial emptiness in the base
     * To fully solve this I have to check all pixels in the top level to see if there is a gap. My program is already not very fast so I chose to not address this. An example image showing this problem is below:
 <img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing42.png' width = '480' height = '480'>
