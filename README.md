@@ -1,7 +1,7 @@
 # Castle
 <img src='https://github.com/JiangxueHan529/castle/blob/main/images/testing29.png'>
-## Table of Contents
 
+## Table of Contents
 1. [Features](#Features)
 2. [Algorithms](#Algorithms)
 3. [Instructions](#Instructions)
@@ -24,8 +24,8 @@
 * Base(N) -> T(N/2) T(N/2) T(N/2) T(N/2)
 * Base(1) -> block
 * Base(1) -> block-C
-* Base(1) -> block-T 
-Image: <img src ='https://github.com/JiangxueHan529/castle/blob/main/images/elements.jpg'>
+* Base(1) -> block-T \
+Image: <img src ='https://github.com/JiangxueHan529/castle/blob/main/images/elements.jpg' width = '500' height = '500'>
 ### Color Patterns 
 * colorful pattern: This pattern uses random colors for each component, resulting in a colorful effect
 * monochromatic pattern: This pattern makes sure that all colors used are of the same r,g,b ratio, just different brightness. It's achieved by randomly generate a base color, and apply one random ratios to r,g,b for each component
@@ -45,11 +45,11 @@ Image: <img src ='https://github.com/JiangxueHan529/castle/blob/main/images/elem
     * I solved this by "erasing" smaller tops if a bigger top is needed in the same area. I created a function in canvas.cpp to set an area black
 * The issue where a block is on top of epsilon
     * I made sure that in the same recursion level nothing can be drawn over epsilon, however it's hard to decide and implement other scenarios. Here are two different situations, one seems ok but the other is not. I did not succeed in making this distinction
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing30.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing33.png'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing30.png' width = '480' height = '285'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing33.png' width = '480' height = '480'>
 * The issue where a top is drawn but there is partial emptiness in the base
     * To fully solve this I have to check all pixels in the top level to see if there is a gap. My program is already not very fast so I chose to not address this. An example image showing this problem is below:
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing42.png'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing42.png' width = '480' height = '480'>
 
 * This program only work on squares with side length that is 2^n (2,4,8,16...)
     * It does not work otherwise because I keep dividing into 4 sub-squares
@@ -72,12 +72,12 @@ To run from the git bash command shell,
 castle/build $ ../bin/Debug/draw_art canvas_width canvas_height num_units size_of_unit color_pattern
 
 ```
-canvas_width: width of canvas
-canvas_height: height of canvas
-num_units: number of blocks on each side of the square
-size_of_unit: the side length of each block
-color_pattern: "colorful", "monochromatic", or "complementary"
-Restriction: canvas_height > num_units * size_of_unit * 1.5f &&  canvas_width < num_units * size_of_unit
+canvas_width: width of canvas\
+canvas_height: height of canvas\
+num_units: number of blocks on each side of the square\
+size_of_unit: the side length of each block\
+color_pattern: "colorful", "monochromatic", or "complementary"\
+**Restriction: canvas_height > num_units * size_of_unit * 1.5f &&  canvas_width < num_units * size_of_unit**\
 If your input does not meet the requirement an exception will be thrown. An example input:
 ```
 castle/build $ ../bin/Debug/draw_art 1000 1000 8 80 colorful
@@ -106,18 +106,18 @@ See explanation of the command line arguments in the Windows section.
 
 ## Results
 * Colorful
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing12.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing27.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing29.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing43.png'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing12.png' width = '480' height = '285'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing27.png' width = '480' height = '285'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing29.png' width = '480' height = '285'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing43.png' width = '480' height = '480'>
 
 * Monochromatic
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing39.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing44.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing45.png'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing39.png' width = '480' height = '480'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing44.png' width = '480' height = '480'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing45.png' width = '480' height = '480'>
 
 * Complementary
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing46.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing47.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing48.png'>
-<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing49.png'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing46.png' width = '480' height = '480'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing47.png' width = '480' height = '480'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing48.png' width = '480' height = '480'>
+<img src= 'https://github.com/JiangxueHan529/castle/blob/main/images/testing49.png' width = '480' height = '480'>
