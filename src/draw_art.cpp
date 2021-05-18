@@ -10,7 +10,7 @@ using namespace std;
 using namespace agl;
 
 
-//coloring: analogous, monochrnomic, complementary
+//coloring: colorful, monochrnomic, complementary
 int vertical_limit;
 int color_base[3];
 unsigned seed = chrono::system_clock::now().time_since_epoch().count();
@@ -272,7 +272,6 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
         }
     }
     else if (key == "BN") {
-        //srand((unsigned)time(NULL));
         float val = random_float(0, 1);
         int choice = (int)(val*6);
         if (choice == 3) {
@@ -298,7 +297,6 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
         if (my_token != "epsilon") {
             new_key = "TN";
-            //this might not fix the holes altogether, might need to look at pixels
             ep = false;
             helper2(drawer, size / 2, cx - size * unit / 4, cy + size * unit / 4, unit, grammar, new_key, ep, color_scheme);
             bool ep_temp = ep;
@@ -326,10 +324,6 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
                 helper2(drawer, size, cx, cy, unit, grammar, new_key, ep, color_scheme);
             }
             else if (my_token == "BN,top") {
-                //how to know if BN will get into epsilon before calling it?
-                  // I need to draw top first so that I can make sure not to draw smaller tops later
-
-
 
                 if ((img.get(cy - size * unit * 0.5 + 1, cx - 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).b != 0)
                     && (img.get(cy - size * unit * 0.5 + 1, cx + 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).b != 0)) {
@@ -581,130 +575,18 @@ int main(int argc, char** argv)
     grammar2.insert(pair<string, string>("TN", "BN|BN,top|BN,top-C|BN,semi-sphere"));
     grammar2.insert(pair<string, string>("BN", "epsilon|TN/2,TN/2,TN/2,TN/2"));
     grammar2.insert(pair<string, string>("B1", "block|block-C|block-T"));
-    //have to figure out the limit to command line arguments
+
     bool ep = false;
     float val1 = random_float(0, 1);
     float val2 = random_float(0, 1);
     float val3 = random_float(0, 1);
-    //cout << "red: " << val1 << endl;
-    //cout << "green: " << val2 << endl;
-    //cout << "blue: " << color_base[2] << endl;
+
     color_base[0] = (int)(val1 * 255);
     color_base[1] = (int)(val2 * 255);
     color_base[2] = (int)(val3 * 255);
 
    helper2(drawer2, size, horizontal_size/2.0f, (vertical_size - size * unit * 1.5f) / 2 + size * unit, unit, grammar2,"TN",ep, color_scheme);
-   drawer2.save("testing50.png");
-   /*drawer.background(167, 242, 242);
-   drawer.begin(LINES);
-   drawer.draw_rectangle(280, 190, 180, 100);
-   drawer.color(242, 168, 40);
-   drawer.fill_rectangle(280, 190, 180, 100);
-   drawer.end();
-   drawer.begin(TRIANGLES);
-   drawer.color(255, 0, 255);
-   drawer.vertex(190, 190);
-   drawer.color(0, 255, 255);
-   drawer.vertex(110, 260);
-   drawer.color(255, 255, 0);
-   drawer.vertex(110, 120);
-   drawer.end();
-   drawer.begin(TRIANGLES);
-   drawer.color(0, 255, 255);
-   drawer.vertex(370, 240);
-   drawer.color(255, 0, 255);
-   drawer.vertex(370, 140);
-   drawer.color(255, 255, 0);
-   drawer.vertex(430, 190);
-   drawer.end();
-   drawer.begin(CIRCLES);
-   drawer.color(0, 0, 0);
-   drawer.input_radius(10);
-   drawer.vertex(395, 190);
-   drawer.end();
-   drawer.begin(POINTS);
-   drawer.color(0, 0, 0);
-   drawer.vertex(395, 190);
-   drawer.vertex(395, 191);
-   drawer.vertex(395, 189);
-   drawer.vertex(394, 190);
-   drawer.vertex(396, 190);
-   drawer.end();
-   drawer.begin(LINES);
-   drawer.color(0, 0, 0);
-  
-   drawer.vertex(210, 200);
-   drawer.input_line_width(5);
-   drawer.vertex(350, 200);
-   drawer.vertex(210, 180);
-   drawer.input_line_width(5);
-   drawer.vertex(350, 180);
-   drawer.end();
-   drawer.begin(CIRCLES);
-   drawer.color(150, 150, 255);
-   drawer.input_radius(10);
-   drawer.vertex(450, 185);
-   drawer.input_radius(25);
-   drawer.vertex(490, 140);
-   drawer.input_radius(40);
-   drawer.vertex(540, 80);
-   drawer.end();
-
-   drawer.save("my_art.png");
-
-   canvas drawer2(600, 400);
-   drawer2.background(0, 0, 0);
-   drawer2.begin(POINTS);
-   drawer2.color(214, 245, 48);
-   drawer2.vertex(300, 200);
-   drawer2.end();
-   drawer2.begin(CIRCLES);
-   drawer2.color(214, 245, 48);
-   drawer2.input_radius(20);
-   drawer2.vertex(300, 200);
-   drawer2.input_radius(40);
-   drawer2.vertex(300, 200);
-   drawer2.input_radius(60);
-   drawer2.vertex(300, 200);
-   drawer2.input_radius(80);
-   drawer2.vertex(300, 200);
-   drawer2.input_radius(100);
-   drawer2.vertex(300, 200);;
-   drawer2.input_radius(120);
-   drawer2.vertex(300, 200);
-   drawer2.end();
-   drawer2.begin(TRIANGLES);
-   drawer2.color(235, 0, 200);
-   drawer2.vertex(120, 320);
-   drawer2.color(55, 205, 255);
-   drawer2.vertex(45, 370);
-   drawer2.color(100, 255, 170);
-   drawer2.vertex(50, 270);
-
-   drawer2.color(115, 197, 200);
-   drawer2.vertex(520, 260);
-   drawer2.color(197, 155, 25);
-   drawer2.vertex(470, 370);
-   drawer2.color(190, 176, 170);
-   drawer2.vertex(440, 270);
-   drawer2.end();
-
-   drawer2.color(255, 138, 200);
-   drawer2.vertex(520, 60);
-   drawer2.color(87, 200, 175);
-   drawer2.vertex(470, 130);
-   drawer2.color(255, 200, 170);
-   drawer2.vertex(440, 60);
-   drawer2.end();
-
-   drawer2.color(255, 200, 30);
-   drawer2.vertex(90, 45);
-   drawer2.color(0, 200, 175);
-   drawer2.vertex(100, 130);
-   drawer2.color(255, 20, 70);
-   drawer2.vertex(30, 80);
-   drawer2.end();
-   drawer2.save("my_art2.png");*/
+   drawer2.save("testing51.png");
 
    return 0;
 }
