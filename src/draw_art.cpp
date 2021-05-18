@@ -10,8 +10,9 @@ using namespace std;
 using namespace agl;
 
 
-
-
+//coloring: analogous, monochrnomic, complementary
+int vertical_limit;
+int color_base[3];
 unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 inline float random_float(float min, float max)
 {
@@ -44,7 +45,7 @@ void helper(canvas &drawer, int size, int cx, int cy, int unit, map<string,strin
 
 }
 
-void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, string> grammar, string key, bool& ep) {
+void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, string> grammar, string key, bool& ep, string color_scheme) {
     map<string, string>::iterator myPair = grammar.find(key);
     string value;
     if (myPair != grammar.end()) {
@@ -65,23 +66,105 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
     string my_token;
     if (key == "B1") {
         ppm_image img = drawer._canvas;
-            float val = random_float(0, 3);
-            int choice = (int)val;
+            float val = random_float(0, 1);
+            int choice = (int)(val*3);
             my_token = token_list[choice];
             if (my_token == "block") {
                 drawer.begin(LINES);
                 drawer.draw_rectangle(cx, cy, unit, unit);
-                drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                if (color_scheme == "monochromatic") {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    drawer.color(red, green, blue);
+                }
+                else if (color_scheme == "colorful") {
+                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                }
+                else {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+                    my_color = random_float(0, 1);
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    if (my_color > 0.5) {
+                        red = 255 - red;
+                        green = 255 - green;
+                        blue = 255 - blue;
+                    }
+                    drawer.color(red, green, blue);
+                }
                 drawer.fill_rectangle(cx, cy, unit, unit);
                 drawer.end();
             }
             else if (my_token == "block-C") {
-
                 drawer.begin(LINES);
                 drawer.draw_rectangle(cx, cy, unit, unit);
-                drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                if (color_scheme == "monochromatic") {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    drawer.color(red, green, blue);
+                }
+                else if (color_scheme == "colorful") {
+                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                }
+                else {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+                    my_color = random_float(0, 1);
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    if (my_color > 0.5) {
+                        red = 255 - red;
+                        green = 255 - green;
+                        blue = 255 - blue;
+                    }
+                    drawer.color(red, green, blue);
+                }
                 drawer.fill_rectangle(cx, cy, unit, unit);
                 drawer.end();
+        
                 drawer.begin(CIRCLES);
                 drawer.color(255, 255, 255);
                 drawer.input_radius(unit / 10.0f);
@@ -96,13 +179,92 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
             }
             else {
+     
                 drawer.begin(LINES);
                 drawer.draw_rectangle(cx, cy, unit, unit);
-                drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                if (color_scheme == "monochromatic") {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    drawer.color(red, green, blue);
+                }
+                else if (color_scheme == "colorful") {
+                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                }
+                else {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    drawer.color(red, green, blue);
+                }
                 drawer.fill_rectangle(cx, cy, unit, unit);
                 drawer.end();
                 drawer.begin(TRIANGLES);
-                drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                if (color_scheme == "monochromatic") {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    
+                    drawer.color(red, green, blue);
+                }
+                else if (color_scheme == "colorful") {
+                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                }
+                else {
+                    float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+                    my_color = random_float(0, 1);
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    if (my_color > 0.5) {
+                        red = 255 - red;
+                        green = 255 - green;
+                        blue = 255 - blue;
+                    }
+                    drawer.color(red, green, blue);
+                }
                 drawer.vertex(cx, cy - unit / 2.0f);
                 drawer.vertex(cx + unit / 2.0f, cy + unit / 2.0f);
                 drawer.vertex(cx - unit / 2.0f, cy + unit / 2.0f);
@@ -111,8 +273,8 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
     }
     else if (key == "BN") {
         //srand((unsigned)time(NULL));
-        float val = random_float(0, 6);
-        int choice = (int)val;
+        float val = random_float(0, 1);
+        int choice = (int)(val*6);
         if (choice == 3) {
             my_token = token_list[0];
         }
@@ -121,6 +283,9 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
         }
         if (my_token == "epsilon") {
             if (size > 2) {
+                my_token = "TN/2,TN/2,TN/2,TN/2";
+            }
+            else if (cy > (vertical_limit - unit * 2)) {
                 my_token = "TN/2,TN/2,TN/2,TN/2";
             }
             else {
@@ -135,17 +300,17 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
             new_key = "TN";
             //this might not fix the holes altogether, might need to look at pixels
             ep = false;
-            helper2(drawer, size / 2, cx - size * unit / 4, cy + size * unit / 4, unit, grammar, new_key, ep);
+            helper2(drawer, size / 2, cx - size * unit / 4, cy + size * unit / 4, unit, grammar, new_key, ep, color_scheme);
             bool ep_temp = ep;
-            helper2(drawer, size / 2, cx + size * unit / 4, cy + size * unit / 4, unit, grammar, new_key, ep);
+            helper2(drawer, size / 2, cx + size * unit / 4, cy + size * unit / 4, unit, grammar, new_key, ep, color_scheme);
             bool ep_temp2 = ep;
-            helper2(drawer, size / 2, cx - size * unit / 4, cy - size * unit / 4, unit, grammar, new_key, ep_temp);
-            helper2(drawer, size / 2, cx + size * unit / 4, cy - size * unit / 4, unit, grammar, new_key, ep_temp2);
+            helper2(drawer, size / 2, cx - size * unit / 4, cy - size * unit / 4, unit, grammar, new_key, ep_temp, color_scheme);
+            helper2(drawer, size / 2, cx + size * unit / 4, cy - size * unit / 4, unit, grammar, new_key, ep_temp2, color_scheme);
         }
     }
         else if (key == "TN") {
-            float val = random_float(0, 4);
-            int choice = (int)val;
+            float val = random_float(0, 1);
+            int choice = (int)(val*4);
             my_token = token_list[choice];
             if (size == 1) {
                 new_key = "B1";
@@ -158,7 +323,7 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
                 my_token = "BN";
             }
             if (my_token == "BN") {
-                helper2(drawer, size, cx, cy, unit, grammar, new_key, ep);
+                helper2(drawer, size, cx, cy, unit, grammar, new_key, ep, color_scheme);
             }
             else if (my_token == "BN,top") {
                 //how to know if BN will get into epsilon before calling it?
@@ -168,10 +333,10 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
                 if ((img.get(cy - size * unit * 0.5 + 1, cx - 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).b != 0)
                     && (img.get(cy - size * unit * 0.5 + 1, cx + 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).b != 0)) {
-                    helper2(drawer, size, cx, cy, unit, grammar, new_key, ep);
+                    helper2(drawer, size, cx, cy, unit, grammar, new_key, ep, color_scheme);
                 }
                 else {
-                    helper2(drawer, size, cx, cy, unit, grammar, new_key, ep);
+                    helper2(drawer, size, cx, cy, unit, grammar, new_key, ep, color_scheme);
                 }
                 // if any of the two higher children is null we should not draw
                 ppm_image img = drawer._canvas;
@@ -187,7 +352,48 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
                     drawer.clear_area(xmin, xmax, ymin, ymax);
                     drawer.begin(TRIANGLES);
-                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                    if (color_scheme == "monochromatic") {
+                        float my_color = random_float(0, 1);
+                        int red = (int)color_base[0] * my_color * 2;
+                        int green = (int)color_base[1] * my_color * 2;
+                        int blue = (int)color_base[2] * my_color * 2;
+
+                        if (red > 255) {
+                            red = 255;
+                        }
+                        if (green > 255) {
+                            green = 255;
+                        }
+                        if (blue > 255) {
+                            blue = 255;
+                        }
+                        drawer.color(red, green, blue);
+                    }
+                    else if (color_scheme == "colorful") {
+                        drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                    }
+                    else{
+                         float my_color = random_float(0, 1);
+                    int red = (int)color_base[0] * my_color * 2;
+                    int green = (int)color_base[1] * my_color * 2;
+                    int blue = (int)color_base[2] * my_color * 2;
+                    my_color = random_float(0, 1);
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    if (my_color > 0.5) {
+                        red = 255 - red;
+                        green = 255 - green;
+                        blue = 255 - blue;
+                    }
+                    drawer.color(red, green, blue);
+                    }
                     drawer.vertex(cx - size * unit / 2.0f, cy - size * unit / 2.0f);
                     drawer.vertex(cx + size * unit / 2.0f, cy - size * unit / 2.0f);
                     drawer.vertex(cx, cy - size * unit);
@@ -200,7 +406,7 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
 
 
-                helper2(drawer, size, cx, cy, unit, grammar, new_key, ep);
+                helper2(drawer, size, cx, cy, unit, grammar, new_key, ep, color_scheme);
                 ppm_image img = drawer._canvas;
                 if ((img.get(cy - size * unit * 0.5 + 1, cx - 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).b != 0)
                     && (img.get(cy - size * unit * 0.5 + 1, cx + 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).b != 0)) {
@@ -214,7 +420,47 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
                     drawer.clear_area(xmin, xmax, ymin, ymax);
                     drawer.begin(TRIANGLES);
-                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                    if (color_scheme == "monochromatic") {
+                        float my_color = random_float(0, 1);
+                        int red = (int)color_base[0] * my_color * 2;
+                        int green = (int)color_base[1] * my_color * 2;
+                        int blue = (int)color_base[2] * my_color * 2;
+                        if (red > 255) {
+                            red = 255;
+                        }
+                        if (green > 255) {
+                            green = 255;
+                        }
+                        if (blue > 255) {
+                            blue = 255;
+                        }
+                        drawer.color(red, green, blue);
+                    }
+                    else if (color_scheme == "colorful") {
+                        drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                    }
+                    else {
+                        float my_color = random_float(0, 1);
+                        int red = (int)color_base[0] * my_color * 2;
+                        int green = (int)color_base[1] * my_color * 2;
+                        int blue = (int)color_base[2] * my_color * 2;
+                        my_color = random_float(0, 1);
+                        if (red > 255) {
+                            red = 255;
+                        }
+                        if (green > 255) {
+                            green = 255;
+                        }
+                        if (blue > 255) {
+                            blue = 255;
+                        }
+                        if (my_color > 0.5) {
+                            red = 255 - red;
+                            green = 255 - green;
+                            blue = 255 - blue;
+                        }
+                        drawer.color(red, green, blue);
+                    }
                     drawer.vertex(cx - size * unit / 2.0f, cy - size * unit / 2.0f);
                     drawer.vertex(cx + size * unit / 2.0f, cy - size * unit / 2.0f);
                     drawer.vertex(cx, cy - size * unit);
@@ -232,7 +478,7 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
             else {
 
-                helper2(drawer, size, cx, cy, unit, grammar, new_key, ep);
+                helper2(drawer, size, cx, cy, unit, grammar, new_key, ep, color_scheme);
                 ppm_image img = drawer._canvas;
                 if ((img.get(cy - size * unit * 0.5 + 1, cx - 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx - 1).b != 0)
                     && (img.get(cy - size * unit * 0.5 + 1, cx + 1).r != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).g != 0 || img.get(cy - size * unit * 0.5 + 1, cx + 1).b != 0)) {
@@ -246,7 +492,48 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
                     drawer.clear_area(xmin, xmax, ymin, ymax);
                     drawer.begin(CIRCLES);
-                    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                    if (color_scheme == "monochromatic") {
+                        float my_color = random_float(0, 1);
+                        int red = (int)color_base[0] * my_color * 2;
+                        int green = (int)color_base[1] * my_color * 2;
+                        int blue = (int)color_base[2] * my_color * 2;
+                        my_color = random_float(0, 1);
+                        if (red > 255) {
+                            red = 255;
+                        }
+                        if (green > 255) {
+                            green = 255;
+                        }
+                        if (blue > 255) {
+                            blue = 255;
+                        }
+                        if (my_color > 0.5) {
+                            red = 255 - red;
+                            green = 255 - green;
+                            blue = 255 - blue;
+                        }
+                        drawer.color(red, green, blue);
+                    }
+                    else if(color_scheme == "colorful"){
+                        drawer.color(rand() % 255, rand() % 255, rand() % 255);
+                    }
+                    else {
+                        float my_color = random_float(0, 1);
+                        int red = (int)color_base[0] * my_color * 2;
+                        int green = (int)color_base[1] * my_color * 2;
+                        int blue = (int)color_base[2] * my_color * 2;
+
+                        if (red > 255) {
+                            red = 255;
+                        }
+                        if (green > 255) {
+                            green = 255;
+                        }
+                        if (blue > 255) {
+                            blue = 255;
+                        }
+                        drawer.color(red, green, blue);
+                    }
                     drawer.input_radius(size * unit / 2.0f);
                     drawer.input_semi_circle();
                     drawer.vertex(cx, cy - size * unit / 2.0f);
@@ -262,36 +549,52 @@ void helper2(canvas& drawer, int size, int cx, int cy, int unit, map<string, str
 
 }
 
-//todo: implement command arguments parsing
+
 int main(int argc, char** argv)
 {
-    
-   //Define unit to be 20
-   int size = 8;
-   int unit = 30;
-   canvas drawer(640, 380);
-   drawer.background(0, 0, 0);
-   map<string, string> grammar;
-   grammar.insert(pair<string, string>("B4", "B1,B1,B1,B1"));
-   helper(drawer, size, 320, (380-size*unit*1.5f)/2 + size*unit, unit, grammar);
-   drawer.begin(TRIANGLES);
-   drawer.color(rand() % 255, rand() % 255, rand() % 255);
-   drawer.vertex(320 - size*unit/2.0f, ((380 - size * unit * 1.5f) / 2 + size * unit) - size*unit/2.0f);
-   drawer.vertex(320 + size * unit / 2.0f, ((380 - size * unit * 1.5f) / 2 + size * unit) - size * unit / 2.0f);
-   drawer.vertex(320, (380 - size * unit * 1.5f) / 2);
-   drawer.end();
-   drawer.save("testing.png");
-   canvas drawer2(640, 380);
-   drawer2.background(0, 0, 0);
-   map<string, string> grammar2;
-   grammar2.insert(pair<string, string>("TN", "BN|BN,top|BN,top-C|BN,semi-sphere"));
-   grammar2.insert(pair<string, string>("BN", "epsilon|TN/2,TN/2,TN/2,TN/2"));
-   grammar2.insert(pair<string, string> ("B1", "block|block-C|block-T"));
-   //have to figure out the limit to command line arguments
-   bool ep = false;
 
-   helper2(drawer2, size, 320, (380 - size * unit * 1.5f) / 2 + size * unit, unit, grammar2,"TN",ep);
-   drawer2.save("testing29.png");
+    int horizontal_size = atoi(argv[1]);
+    int vertical_size = atoi(argv[2]);
+    vertical_limit = vertical_size;
+    int size = atoi(argv[3]);
+    int unit = atoi(argv[4]);
+    string color_scheme(argv[5]);
+    if (vertical_size < size * unit * 1.5f || horizontal_size < size * unit) {
+        throw std::invalid_argument("size too big to fit in canvas.");
+        return -1;
+    }
+    canvas drawer(horizontal_size, vertical_size);
+    drawer.background(0, 0, 0);
+    map<string, string> grammar;
+    grammar.insert(pair<string, string>("B4", "B1,B1,B1,B1"));
+    helper(drawer, size, horizontal_size / 2.0f, (vertical_size - size * unit * 1.5f) / 2 + size * unit, unit, grammar);
+    drawer.begin(TRIANGLES);
+    drawer.color(rand() % 255, rand() % 255, rand() % 255);
+    drawer.vertex(horizontal_size / 2.0f - size * unit / 2.0f, ((vertical_size - size * unit * 1.5f) / 2 + size * unit) - size * unit / 2.0f);
+    drawer.vertex(horizontal_size / 2.0f + size * unit / 2.0f, ((vertical_size - size * unit * 1.5f) / 2 + size * unit) - size * unit / 2.0f);
+    drawer.vertex(horizontal_size / 2.0f, (vertical_size - size * unit * 1.5f) / 2);
+    drawer.end();
+    drawer.save("testing.png");
+    canvas drawer2(horizontal_size, vertical_size);
+    drawer2.background(0, 0, 0);
+    map<string, string> grammar2;
+    grammar2.insert(pair<string, string>("TN", "BN|BN,top|BN,top-C|BN,semi-sphere"));
+    grammar2.insert(pair<string, string>("BN", "epsilon|TN/2,TN/2,TN/2,TN/2"));
+    grammar2.insert(pair<string, string>("B1", "block|block-C|block-T"));
+    //have to figure out the limit to command line arguments
+    bool ep = false;
+    float val1 = random_float(0, 1);
+    float val2 = random_float(0, 1);
+    float val3 = random_float(0, 1);
+    //cout << "red: " << val1 << endl;
+    //cout << "green: " << val2 << endl;
+    //cout << "blue: " << color_base[2] << endl;
+    color_base[0] = (int)(val1 * 255);
+    color_base[1] = (int)(val2 * 255);
+    color_base[2] = (int)(val3 * 255);
+
+   helper2(drawer2, size, horizontal_size/2.0f, (vertical_size - size * unit * 1.5f) / 2 + size * unit, unit, grammar2,"TN",ep, color_scheme);
+   drawer2.save("testing50.png");
    /*drawer.background(167, 242, 242);
    drawer.begin(LINES);
    drawer.draw_rectangle(280, 190, 180, 100);
