@@ -25,7 +25,7 @@
 * Base(1) -> block
 * Base(1) -> block-C
 * Base(1) -> block-T \
-Image: <img src ='https://github.com/JiangxueHan529/castle/blob/main/images/elements.jpg' width = '500' height = '500'>
+<img src ='https://github.com/JiangxueHan529/castle/blob/main/images/elements.jpg' width = '500' height = '500'>
 ### Color Patterns 
 * colorful pattern: This pattern uses random colors for each component, resulting in a colorful effect
 * monochromatic pattern: This pattern makes sure that all colors used are of the same r,g,b ratio, just different brightness. It's achieved by randomly generate a base color, and apply one random ratios to r,g,b for each component
