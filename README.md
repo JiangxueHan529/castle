@@ -80,6 +80,8 @@ num_units: number of blocks on each side of the square\
 size_of_unit: the side length of each block\
 color_pattern: "colorful", "monochromatic", or "complementary"\
 **Restriction: canvas_height > num_units * size_of_unit * 1.5f &&  canvas_width < num_units * size_of_unit**\
+**num_units has to be in the form 2^n**\
+**It's advised that you run multiple times because the result is different each time and there is randomness in the process**\
 If your input does not meet the requirement an exception will be thrown. An example input:
 ```
 castle/build $ ../bin/Debug/draw_art 1000 1000 8 80 colorful
