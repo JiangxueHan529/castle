@@ -11,7 +11,7 @@
 * procedurally generate the castle using grammar rules, with various types of patterns
 * user can input each unit's size and the number of units, along with size of the canvas
 * user can also choose what color pattern is preferred from monochromatic, colorful and complementary
-* I added methods to draw semi-circle and fill in circles, which were not done in assignment 2
+* I added methods to draw semi-circle and fill in circles
 
 
 ## Algorithms
